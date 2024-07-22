@@ -13,7 +13,7 @@ const App = defineComponent({
 
   },
 
-  template: `<div>{{date}}</div>`
+  template: `<div>{{ date }}</div>`
 })
 
 const app = createApp(App)

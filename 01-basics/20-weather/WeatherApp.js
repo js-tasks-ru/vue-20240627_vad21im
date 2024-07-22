@@ -24,8 +24,7 @@ export default defineComponent({
       <h1 class="title">Погода в Средиземье</h1>
 
       <ul v-for="item in weatherDataArr" class="weather-list unstyled-list" style="margin-bottom: 8px">
-        <p>{{item}}</p>
-        <li class="weather-card" :class="!blackandwhite(item.current)?'weather-card--night':''">
+        <li class="weather-card" :class="{'weather-card--night':!blackandwhite(item.current)}">
           <div v-if="item.alert" class="weather-alert">
             <span class="weather-alert__icon">⚠️</span>
             <span class="weather-alert__description">{{item.alert.sender_name}}<br>{{item.alert.description}}</span>
