@@ -27,7 +27,6 @@ export default defineComponent({
 
   template: `
     <div>
-
       <meetup-cover :title="meetup.title" :image="meetup.image"/>
 
       <UiContainer>
@@ -41,7 +40,7 @@ export default defineComponent({
 
             <meetup-agenda :agenda="meetup.agenda"/>
 
-            <UiAlert v-if="meetup.agenda.length === 0" text="Программа пока пуста..."></UiAlert>
+            <UiAlert v-if="meetup.agenda.length < 1" text="Программа пока пуста..."></UiAlert>
 
           </div>
           <div class="meetup__aside">
