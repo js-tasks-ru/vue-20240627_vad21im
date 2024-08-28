@@ -28,27 +28,24 @@ export default defineComponent({
   template: `
     <div>
 
-      <!-- Обложка митапа -->
+      <meetup-cover :title="meetup.title" :image="meetup.image"/>
 
       <UiContainer>
         <div class="meetup">
           <div class="meetup__content">
-            <meetup-cover :title="meetup.title" :image="meetup.image"/>
             <h2>Описание</h2>
+
             <meetup-description :description="meetup.description"/>
-            <!-- Описание митапа -->
 
             <h2>Программа</h2>
 
-            <!-- Программа митапа -->
-            <!-- Или при пустой программе - сообщение "Программа пока пуста..." в UiAlert -->
-            <UiAlert v-if="!meetup.agenda">Программа пока пуста...</UiAlert>
             <meetup-agenda :agenda="meetup.agenda"/>
+
+            <UiAlert v-if="meetup.agenda.length === 0">Программа пока пуста...</UiAlert>
 
           </div>
           <div class="meetup__aside">
 
-            <!-- Краткая информация о митапе -->
             <meetup-info :organizer="meetup.organizer" :place="meetup.place" :date="meetup.date"/>
 
             <div class="meetup__aside-buttons"></div>
