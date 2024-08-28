@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import {defineComponent, toRefs, defineEmits} from 'vue'
 import { UiButton } from '@shgk/vue-course-ui'
 import './UiCounter.css'
 
@@ -9,15 +9,46 @@ export default defineComponent({
     UiButton,
   },
 
-  setup() {
-    // Рекомендуется для практики реализовать обработку событий внутри setup, а не непосредственно в шаблоне
+  props: {
+    count: {
+      type: Number,
+    },
+
+    min: {
+      type: Number,
+      default: 0
+    },
+
+    max: {
+      type: Number,
+      default: Infinity
+    }
+  },
+
+  emit: ['update:count'],
+
+  setup(props,ctx) {
+    const { count } = toRefs(props)
+    function plus(){
+      ctx.emit('update:count', count.value + 1)
+    }
+
+    function minus(){
+      ctx.emit('update:count', count.value - 1)
+    }
+
+    return {
+      plus,
+      minus,
+
+    }
   },
 
   template: `
     <div class="counter">
-      <UiButton aria-label="Decrement" disabled>➖</UiButton>
-      <span class="count" data-testid="count">3</span>
-      <UiButton aria-label="Increment">➕</UiButton>
+      <UiButton aria-label="Decrement" :disabled="count<=min" @click="minus">➖</UiButton>
+      <span class="count" data-testid="count">{{count}}</span>
+      <UiButton aria-label="Increment" :disabled="count>=max" @click="plus">➕</UiButton>
     </div>
   `,
 })
