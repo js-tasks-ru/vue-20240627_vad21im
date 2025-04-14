@@ -1,19 +1,48 @@
-import { defineComponent } from 'vue'
-// import { getMeetup } from './meetupsService.ts'
+import {computed, defineComponent, onMounted, reactive, ref, watch} from 'vue'
+import { getMeetup } from './meetupsService.ts'
 
 export default defineComponent({
   name: 'SelectedMeetupApp',
 
-  setup() {},
+  setup() {
+    const meetup = ref('')
+
+    let id = ref(0)
+
+    function changeId(arg) {
+      if(arg === '+') {
+        id.value++
+      } else if(arg === '-') {
+        id.value--
+      }
+    }
+
+    watch(id, ()=>{
+      getMeetup(id.value).then(data=>{
+        meetup.value = data
+      })
+    })
+
+    onMounted(()=>{
+      id.value = 1
+    })
+
+    return {
+      meetup,
+      changeId,
+      id
+    }
+  },
 
   template: `
     <div class="meetup-selector">
       <div class="meetup-selector__control">
-        <button class="button button--secondary" type="button" disabled>Предыдущий</button>
+        <button class="button button--secondary" type="button" @click="changeId('-')" :disabled="id < 2">Предыдущий</button>
 
         <div class="radio-group" role="radiogroup">
           <div class="radio-group__button">
             <input
+              v-model="id"
               id="meetup-id-1"
               class="radio-group__input"
               type="radio"
@@ -24,6 +53,7 @@ export default defineComponent({
           </div>
           <div class="radio-group__button">
             <input
+              v-model="id"
               id="meetup-id-2"
               class="radio-group__input"
               type="radio"
@@ -34,6 +64,7 @@ export default defineComponent({
           </div>
           <div class="radio-group__button">
             <input
+              v-model="id"
               id="meetup-id-3"
               class="radio-group__input"
               type="radio"
@@ -44,6 +75,7 @@ export default defineComponent({
           </div>
           <div class="radio-group__button">
             <input
+              v-model="id"
               id="meetup-id-4"
               class="radio-group__input"
               type="radio"
@@ -54,6 +86,7 @@ export default defineComponent({
           </div>
           <div class="radio-group__button">
             <input
+              v-model="id"
               id="meetup-id-5"
               class="radio-group__input"
               type="radio"
@@ -64,12 +97,12 @@ export default defineComponent({
           </div>
         </div>
 
-        <button class="button button--secondary" type="button">Следующий</button>
+        <button class="button button--secondary" type="button" @click="changeId('+')" :disabled="id > 4">Следующий</button>
       </div>
 
       <div class="meetup-selector__cover">
         <div class="meetup-cover">
-          <h1 class="meetup-cover__title">Some Meetup Title</h1>
+          <h1 class="meetup-cover__title">{{ meetup.title }}</h1>
         </div>
       </div>
 
